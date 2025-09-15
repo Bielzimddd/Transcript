@@ -133,7 +133,9 @@ messagesData.forEach(msg => {
       if(e.image){
         const img = document.createElement('img');
         img.src = e.image;
-        img.style.maxWidth = '100%';
+        img.style.width = '100%';
+        img.style.height = 'auto';
+        img.style.display = 'block';
         img.style.marginTop = '5px';
         img.style.borderRadius = '8px';
         embedDiv.appendChild(img);
@@ -143,9 +145,10 @@ messagesData.forEach(msg => {
       if(e.thumbnail){
         const thumb = document.createElement('img');
         thumb.src = e.thumbnail;
-        thumb.style.width = '50px';
-        thumb.style.height = '50px';
-        thumb.style.borderRadius = '50%';
+        thumb.style.width = '80px';
+        thumb.style.height = '80px';
+        thumb.style.objectFit = 'cover';
+        thumb.style.borderRadius = '8px';
         thumb.style.marginTop = '5px';
         embedDiv.appendChild(thumb);
       }
@@ -159,7 +162,9 @@ messagesData.forEach(msg => {
     msg.attachments.forEach(att => {
       const img = document.createElement('img');
       img.src = att;
-      img.style.maxWidth = '100%';
+      img.style.width = '100%';
+      img.style.height = 'auto';
+      img.style.display = 'block';
       img.style.marginTop = '5px';
       img.style.borderRadius = '8px';
       contentDiv.appendChild(img);
@@ -180,4 +185,5 @@ footer.textContent = `Ticket fechado por: ${ticketInfo.closerTag} | Status: ${ti
 
 </body>
 </html>
+
 
