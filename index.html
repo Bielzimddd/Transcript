@@ -1,87 +1,38 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transcript - Federal City</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: #1e1e2f;
-      color: #f0f0f0;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #27293d;
-      padding: 20px;
-      text-align: center;
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #ff4757;
-    }
-    .chat-container {
-      padding: 20px;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    .message {
-      display: flex;
-      margin-bottom: 15px;
-    }
-    .message.user {
-      justify-content: flex-end;
-    }
-    .message .content {
-      max-width: 70%;
-      padding: 10px 15px;
-      border-radius: 15px;
-      background: #35365a;
-      position: relative;
-      word-wrap: break-word;
-    }
-    .message.user .content {
-      background: #ff4757;
-      color: #fff;
-    }
-    .message .author {
-      font-size: 0.85rem;
-      font-weight: 500;
-      margin-bottom: 3px;
-    }
-    .message .timestamp {
-      font-size: 0.7rem;
-      color: #aaaaaa;
-      margin-top: 3px;
-    }
-    .embed {
-      border-left: 4px solid #ffa502;
-      background: #2e2e4e;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 8px;
-    }
-    .embed .title {
-      font-weight: 700;
-      color: #ffa502;
-    }
-    .embed .description {
-      margin-top: 5px;
-    }
-    .footer {
-      text-align: center;
-      padding: 15px;
-      font-size: 0.85rem;
-      color: #999;
-      border-top: 1px solid #444;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transcript - Federal City</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Roboto', sans-serif; background: #1e1e2f; color: #f0f0f0; margin:0; padding:0; }
+  header { background: #27293d; padding: 20px; text-align: center; font-size: 1.4rem; font-weight: 700; color: #ff4757; }
+  .chat-container { padding: 20px; max-width: 800px; margin: 0 auto; }
+  .message { display: flex; margin-bottom: 15px; }
+  .message.user { justify-content: flex-end; }
+  .message .content { max-width: 70%; padding: 10px 15px; border-radius: 15px; background: #35365a; position: relative; word-wrap: break-word; }
+  .message.user .content { background: #ff4757; color: #fff; }
+  .message .author { font-size: 0.85rem; font-weight: 500; margin-bottom: 3px; }
+  .message .timestamp { font-size: 0.7rem; color: #aaaaaa; margin-top: 3px; }
+  .embed { border-left: 4px solid #ffa502; background: #2e2e4e; padding: 10px; margin-top: 5px; border-radius: 8px; }
+  .embed .embed-author { display: flex; align-items: center; margin-bottom: 5px; }
+  .embed .embed-author img { width: 24px; height: 24px; border-radius: 50%; margin-right: 5px; }
+  .embed .title { font-weight: 700; color: #ffa502; }
+  .embed .description { margin-top: 5px; }
+  .embed .fields { display: flex; flex-wrap: wrap; margin-top: 5px; }
+  .embed .field { flex: 1 1 auto; margin-right: 5px; margin-bottom: 5px; background: #3a3a5a; padding: 5px; border-radius: 5px; }
+  .embed img.embed-image { width: 100%; height: auto; margin-top: 5px; border-radius: 8px; }
+  .embed img.embed-thumb { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; margin-top: 5px; }
+  .embed .footer { font-size: 0.7rem; color: #aaa; margin-top: 5px; display: flex; align-items: center; }
+  .embed .footer img { width: 16px; height: 16px; border-radius: 50%; margin-right: 5px; }
+  .footer { text-align: center; padding: 15px; font-size: 0.85rem; color: #999; border-top: 1px solid #444; }
+</style>
 </head>
 <body>
-  <header>Transcript do Ticket - Federal City</header>
-  <div class="chat-container" id="chat"></div>
-  <div class="footer" id="footer"></div>
+<header>Transcript do Ticket - Federal City</header>
+<div class="chat-container" id="chat"></div>
+<div class="footer" id="footer"></div>
 
 <script>
 const urlParams = new URLSearchParams(window.location.search);
@@ -109,19 +60,35 @@ messagesData.forEach(msg => {
     contentDiv.appendChild(textDiv);
   }
 
-  // Renderiza embeds
+  // Renderiza embeds completos
   if(msg.embeds){
     msg.embeds.forEach(e => {
       const embedDiv = document.createElement('div');
       embedDiv.classList.add('embed');
+      if(e.color) embedDiv.style.borderLeftColor = `#${e.color.toString(16)}`;
 
+      // Autor da embed
+      if(e.author){
+        const author = document.createElement('div');
+        author.classList.add('embed-author');
+        if(e.author.icon_url){
+          const icon = document.createElement('img');
+          icon.src = e.author.icon_url;
+          author.appendChild(icon);
+        }
+        const name = document.createElement('span');
+        name.textContent = e.author.name;
+        author.appendChild(name);
+        embedDiv.appendChild(author);
+      }
+
+      // Título e descrição
       if(e.title){
         const title = document.createElement('div');
         title.classList.add('title');
         title.textContent = e.title;
         embedDiv.appendChild(title);
       }
-
       if(e.description){
         const desc = document.createElement('div');
         desc.classList.add('description');
@@ -129,28 +96,48 @@ messagesData.forEach(msg => {
         embedDiv.appendChild(desc);
       }
 
-      // Renderiza imagem da embed
-      if(e.image){
+      // Campos
+      if(e.fields){
+        const fieldsDiv = document.createElement('div');
+        fieldsDiv.classList.add('fields');
+        e.fields.forEach(f => {
+          const fDiv = document.createElement('div');
+          fDiv.classList.add('field');
+          fDiv.innerHTML = `<strong>${f.name}</strong><br>${f.value}`;
+          fieldsDiv.appendChild(fDiv);
+        });
+        embedDiv.appendChild(fieldsDiv);
+      }
+
+      // Thumbnail
+      if(e.thumbnail && e.thumbnail.url){
+        const thumb = document.createElement('img');
+        thumb.src = e.thumbnail.url;
+        thumb.classList.add('embed-thumb');
+        embedDiv.appendChild(thumb);
+      }
+
+      // Imagem principal
+      if(e.image && e.image.url){
         const img = document.createElement('img');
-        img.src = e.image;
-        img.style.width = '100%';
-        img.style.height = 'auto';
-        img.style.display = 'block';
-        img.style.marginTop = '5px';
-        img.style.borderRadius = '8px';
+        img.src = e.image.url;
+        img.classList.add('embed-image');
         embedDiv.appendChild(img);
       }
 
-      // Renderiza thumbnail da embed
-      if(e.thumbnail){
-        const thumb = document.createElement('img');
-        thumb.src = e.thumbnail;
-        thumb.style.width = '80px';
-        thumb.style.height = '80px';
-        thumb.style.objectFit = 'cover';
-        thumb.style.borderRadius = '8px';
-        thumb.style.marginTop = '5px';
-        embedDiv.appendChild(thumb);
+      // Footer
+      if(e.footer){
+        const footerDiv = document.createElement('div');
+        footerDiv.classList.add('footer');
+        if(e.footer.icon_url){
+          const fIcon = document.createElement('img');
+          fIcon.src = e.footer.icon_url;
+          footerDiv.appendChild(fIcon);
+        }
+        const fText = document.createElement('span');
+        fText.textContent = e.footer.text || '';
+        footerDiv.appendChild(fText);
+        embedDiv.appendChild(footerDiv);
       }
 
       contentDiv.appendChild(embedDiv);
@@ -182,8 +169,5 @@ messagesData.forEach(msg => {
 
 footer.textContent = `Ticket fechado por: ${ticketInfo.closerTag} | Status: ${ticketInfo.status} | Motivo: ${ticketInfo.reason}`;
 </script>
-
 </body>
 </html>
-
-
