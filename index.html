@@ -1,194 +1,148 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Federal City - Transcript do Ticket</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-  body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background-color: #0a0a0a;
-    color: #e0e0e0;
-  }
-
-  header {
-    background: linear-gradient(90deg, #e10600, #8b0000);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    padding: 20px;
-    color: #fff;
-    font-size: 1.6rem;
-    font-weight: 700;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-  }
-
-  header img {
-    height: 50px;
-    border-radius: 8px;
-  }
-
-  .container {
-    display: flex;
-    min-height: calc(100vh - 90px);
-  }
-
-  .sidebar {
-    width: 320px;
-    background-color: #1c1c1c;
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    box-shadow: 3px 0 15px rgba(0,0,0,0.7);
-  }
-
-  .sidebar h2 {
-    color: #e10600;
-    border-bottom: 2px solid #e10600;
-    padding-bottom: 5px;
-    font-size: 1.3rem;
-  }
-
-  .sidebar p {
-    font-size: 0.95rem;
-    margin: 3px 0;
-    color: #ccc;
-  }
-
-  .content {
-    flex: 1;
-    padding: 25px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .ticket-header {
-    background-color: #1c1c1c;
-    padding: 15px 20px;
-    border-radius: 12px;
-    box-shadow: 0 3px 15px rgba(0,0,0,0.6);
-    margin-bottom: 20px;
-  }
-
-  .ticket-header h3 {
-    margin: 0 0 10px 0;
-    color: #e10600;
-  }
-
-  .ticket-header p {
-    margin: 4px 0;
-    color: #ccc;
-  }
-
-  .message {
-    border-radius: 12px;
-    padding: 12px 15px;
-    max-width: 75%;
-    position: relative;
-    word-wrap: break-word;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.7);
-  }
-
-  .message.user {
-    background-color: #2a2a2a;
-    margin-right: auto;
-  }
-
-  .message.staff {
-    background-color: #e10600;
-    margin-left: auto;
-    color: #fff;
-  }
-
-  .message .author {
-    font-weight: 600;
-    margin-bottom: 5px;
-  }
-
-  .message .timestamp {
-    font-size: 0.75rem;
-    color: #ccc;
-    position: absolute;
-    bottom: 5px;
-    right: 10px;
-  }
-
-  @media (max-width: 900px) {
-    .container { flex-direction: column; }
-    .sidebar { width: 100%; box-shadow: none; padding: 20px; }
-    .content { padding: 20px; }
-    .message { max-width: 90%; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transcript - Federal City</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #1e1e2f;
+      color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #27293d;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ff4757;
+    }
+    .chat-container {
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .message {
+      display: flex;
+      margin-bottom: 15px;
+    }
+    .message.user {
+      justify-content: flex-end;
+    }
+    .message .content {
+      max-width: 70%;
+      padding: 10px 15px;
+      border-radius: 15px;
+      background: #35365a;
+      position: relative;
+      word-wrap: break-word;
+    }
+    .message.user .content {
+      background: #ff4757;
+      color: #fff;
+    }
+    .message .author {
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+    .message .timestamp {
+      font-size: 0.7rem;
+      color: #aaaaaa;
+      margin-top: 3px;
+    }
+    .embed {
+      border-left: 4px solid #ffa502;
+      background: #2e2e4e;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+    }
+    .embed .title {
+      font-weight: 700;
+      color: #ffa502;
+    }
+    .embed .description {
+      margin-top: 5px;
+    }
+    .footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 0.85rem;
+      color: #999;
+      border-top: 1px solid #444;
+    }
+  </style>
 </head>
 <body>
-<header>
-  <img src="https://i.imgur.com/LOGO.png" alt="Federal City Logo">
-  Federal City - Transcript
-</header>
+  <header>Transcript do Ticket - Federal City</header>
+  <div class="chat-container" id="chat"></div>
+  <div class="footer" id="footer"></div>
 
-<div class="container">
-  <div class="sidebar">
-    <h2>Informações do Ticket</h2>
-    <p><strong>Canal:</strong> <span id="ticket-channel">#ticket-exemplo</span></p>
-    <p><strong>Criado por:</strong> <span id="ticket-author">UsuárioExemplo#1234</span></p>
-    <p><strong>ID de quem abriu:</strong> <span id="ticket-userid">1234567890</span></p>
-    <p><strong>Fechado por:</strong> <span id="ticket-closer">Staff#1234</span></p>
-    <p><strong>ID de quem fechou:</strong> <span id="ticket-closerid">0987654321</span></p>
-    <p><strong>Data:</strong> <span id="ticket-date">00/00/0000</span></p>
-    <p><strong>Status:</strong> <span id="ticket-status">Fechado</span></p>
-    <p><strong>Motivo:</strong> <span id="ticket-reason">Motivo aqui</span></p>
-  </div>
+  <script>
+    // Dados vindos do link (base64)
+    const urlParams = new URLSearchParams(window.location.search);
+    const messagesData = JSON.parse(atob(urlParams.get('data')));
+    const ticketInfo = JSON.parse(atob(urlParams.get('info')));
 
-  <div class="content" id="messages">
-    <!-- Mensagens aqui -->
-  </div>
-</div>
+    const chat = document.getElementById('chat');
+    const footer = document.getElementById('footer');
 
-<script>
-const urlParams = new URLSearchParams(window.location.search);
-const data = urlParams.get("data");
-const ticketInfo = urlParams.get("info");
+    // Renderiza mensagens
+    messagesData.forEach(msg => {
+      const div = document.createElement('div');
+      div.classList.add('message');
+      if (!msg.author.includes(ticketInfo.closerTag)) div.classList.add('user');
 
-// Preencher mensagens
-if (data) {
-  const messages = JSON.parse(atob(data));
-  const container = document.getElementById("messages");
+      const contentDiv = document.createElement('div');
+      contentDiv.classList.add('content');
 
-  messages.forEach(msg => {
-    const div = document.createElement("div");
-    div.className = "message " + (msg.author.includes("Staff") || msg.author.includes("Bot") ? "staff" : "user");
-    div.innerHTML = `
-      <div class="author">${msg.author}</div>
-      <div class="content">${msg.content}</div>
-      <div class="timestamp">${msg.timestamp}</div>
-    `;
-    container.appendChild(div);
-  });
+      const authorDiv = document.createElement('div');
+      authorDiv.classList.add('author');
+      authorDiv.textContent = msg.author;
 
-  container.scrollTop = container.scrollHeight;
-} else {
-  document.getElementById("messages").innerText = "Nenhum transcript disponível.";
-}
+      contentDiv.appendChild(authorDiv);
 
-// Preencher infos do ticket
-if (ticketInfo) {
-  const info = JSON.parse(atob(ticketInfo));
-  document.getElementById("ticket-channel").innerText = info.channel;
-  document.getElementById("ticket-author").innerText = info.authorTag;
-  document.getElementById("ticket-userid").innerText = info.authorId;
-  document.getElementById("ticket-closer").innerText = info.closerTag;
-  document.getElementById("ticket-closerid").innerText = info.closerId;
-  document.getElementById("ticket-date").innerText = info.date;
-  document.getElementById("ticket-status").innerText = info.status;
-  document.getElementById("ticket-reason").innerText = info.reason;
-}
-</script>
+      if(msg.content) {
+        const textDiv = document.createElement('div');
+        textDiv.textContent = msg.content;
+        contentDiv.appendChild(textDiv);
+      }
+
+      if(msg.embeds) {
+        msg.embeds.forEach(e => {
+          const embedDiv = document.createElement('div');
+          embedDiv.classList.add('embed');
+          if(e.title) {
+            const title = document.createElement('div');
+            title.classList.add('title');
+            title.textContent = e.title;
+            embedDiv.appendChild(title);
+          }
+          if(e.description) {
+            const desc = document.createElement('div');
+            desc.classList.add('description');
+            desc.textContent = e.description;
+            embedDiv.appendChild(desc);
+          }
+          contentDiv.appendChild(embedDiv);
+        });
+      }
+
+      const timestampDiv = document.createElement('div');
+      timestampDiv.classList.add('timestamp');
+      timestampDiv.textContent = msg.timestamp;
+
+      contentDiv.appendChild(timestampDiv);
+      div.appendChild(contentDiv);
+      chat.appendChild(div);
+    });
+
+    footer.textContent = `Ticket fechado por: ${ticketInfo.closerTag} | Status: ${ticketInfo.status} | Motivo: ${ticketInfo.reason}`;
+  </script>
 </body>
 </html>
