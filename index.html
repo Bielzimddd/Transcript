@@ -17,10 +17,19 @@
     background: linear-gradient(90deg, #6a00f4, #00c6ff);
     padding: 20px;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
     font-size: 1.5rem;
     font-weight: 700;
     color: #fff;
     box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+
+  header img {
+    height: 40px;
+    border-radius: 8px;
   }
 
   .container {
@@ -30,21 +39,26 @@
   }
 
   .sidebar {
-    width: 250px;
+    width: 300px;
     background: #1b1c2b;
-    padding: 20px;
+    padding: 25px 20px;
     box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
 
   .sidebar h2 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
+    font-size: 1.3rem;
     color: #00c6ff;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 5px;
   }
 
   .sidebar p {
-    font-size: 0.9rem;
-    margin: 5px 0;
+    font-size: 0.95rem;
+    margin: 4px 0;
     color: #ccc;
   }
 
@@ -52,15 +66,18 @@
     flex: 1;
     padding: 20px;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
   }
 
   .message {
     margin-bottom: 15px;
     padding: 12px 15px;
-    border-radius: 12px;
-    max-width: 70%;
+    border-radius: 15px;
+    max-width: 75%;
     position: relative;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    word-wrap: break-word;
   }
 
   .message.author-bot {
@@ -81,47 +98,68 @@
 
   .message .timestamp {
     font-size: 0.75rem;
-    color: #aaa;
+    color: #888;
     position: absolute;
     bottom: 5px;
     right: 10px;
   }
 
-  .header-info {
+  .ticket-header {
+    background: #1b1c2b;
+    padding: 15px 20px;
+    border-radius: 12px;
     margin-bottom: 20px;
-    border-bottom: 1px solid #444;
-    padding-bottom: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
   }
 
-  @media (max-width: 768px) {
+  .ticket-header h3 {
+    margin: 0 0 10px 0;
+    color: #00c6ff;
+  }
+
+  .ticket-header p {
+    margin: 3px 0;
+    color: #ccc;
+  }
+
+  @media (max-width: 900px) {
     .container { flex-direction: column; }
-    .sidebar { width: 100%; box-shadow: none; }
-    .content { padding: 10px; }
+    .sidebar { width: 100%; box-shadow: none; padding: 20px; }
+    .content { padding: 15px; }
     .message { max-width: 90%; }
   }
 </style>
 </head>
 <body>
-<header>Transcript do Ticket</header>
+<header>
+  <img src="https://media.discordapp.net/attachments/1318705475126169601/1411373305646026892/image.png?ex=68c98352&is=68c831d2&hm=73781e457b87f32f793709893ef25d6d2f4d0f8a1999d6127714457d811f1f10&=&format=webp&quality=lossless" alt="Logo"> <!-- Substitua pelo link da sua logo -->
+  Transcript do Ticket
+</header>
 
 <div class="container">
   <div class="sidebar">
     <h2>Informações do Ticket</h2>
     <p><strong>Canal:</strong> <span id="ticket-channel">#ticket-exemplo</span></p>
     <p><strong>Criado por:</strong> <span id="ticket-author">UsuárioExemplo#1234</span></p>
+    <p><strong>ID de quem abriu:</strong> <span id="ticket-userid">1234567890</span></p>
+    <p><strong>Fechado por:</strong> <span id="ticket-closer">Staff#1234</span></p>
+    <p><strong>ID de quem fechou:</strong> <span id="ticket-closerid">0987654321</span></p>
     <p><strong>Data:</strong> <span id="ticket-date">00/00/0000</span></p>
     <p><strong>Status:</strong> <span id="ticket-status">Fechado</span></p>
+    <p><strong>Motivo do fechamento:</strong> <span id="ticket-reason">Motivo aqui</span></p>
   </div>
 
   <div class="content" id="messages">
-    <!-- As mensagens serão inseridas aqui via JS -->
+    <!-- Mensagens serão inseridas aqui -->
   </div>
 </div>
 
 <script>
   const urlParams = new URLSearchParams(window.location.search);
   const data = urlParams.get("data"); // Recebe JSON base64 do bot
+  const ticketInfo = urlParams.get("info"); // Recebe JSON base64 das infos do ticket
 
+  // Preencher mensagens
   if (data) {
     const messages = JSON.parse(atob(data));
     const container = document.getElementById("messages");
@@ -140,6 +178,19 @@
     container.scrollTop = container.scrollHeight;
   } else {
     document.getElementById("messages").innerText = "Nenhum transcript disponível.";
+  }
+
+  // Preencher infos do ticket
+  if (ticketInfo) {
+    const info = JSON.parse(atob(ticketInfo));
+    document.getElementById("ticket-channel").innerText = info.channel;
+    document.getElementById("ticket-author").innerText = info.authorTag;
+    document.getElementById("ticket-userid").innerText = info.authorId;
+    document.getElementById("ticket-closer").innerText = info.closerTag;
+    document.getElementById("ticket-closerid").innerText = info.closerId;
+    document.getElementById("ticket-date").innerText = info.date;
+    document.getElementById("ticket-status").innerText = info.status;
+    document.getElementById("ticket-reason").innerText = info.reason;
   }
 </script>
 </body>
